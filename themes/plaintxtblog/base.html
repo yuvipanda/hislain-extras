@@ -1,0 +1,96 @@
+{% from "macros.html" import primary_sidebar_block %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+<head>
+<title> {% block title %} {% endblock %} | {{settings.name}}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="{{settings.base_url}}static/style.css" type="text/css" />
+<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'></script>
+<style type="text/css">/*<![CDATA[*/* html #searchform{margin-top:-13px;}*+ html #searchform{margin-top:-13px;}  #content-body,x:-moz-any-link{float:left;margin-right:28px;}#content-body, x:-moz-any-link, x:default{float:none;margin-right:25px;} /*]]>*/</style>
+<!--[if IE 6]><style type="text/css">/*<![CDATA[*/#header{background-image: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='{{settings.base_url}}static/images/content_top.png',sizingMethod='scale'); }#footer{background-image: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='{{settings.base_url}}static/images/content_bottom.png',sizingMethod='scale'); }.comm_date{background-image: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='{{settings.base_url}}static/images/date_comm_box.png',sizingMethod='scale'); }/*]]>*/</style><![endif]-->
+{{ hooks.as_string("html_head") }}
+<style type="text/css">
+body{font-family:verdana, geneva, sans-serif;font-size:75%;}
+body div#content h2,div#content h3,div#content h4,div#content h5,div#content h6{font-family:verdana, geneva, sans-serif;}
+body div.sidebar{text-align:right;}
+body div#primary{float:left; width: 21%;}
+body div#secondary{float:left; width: 15%;}
+body div#content{float:left; margin:0 0 0 5px; width: 60%;}
+body div.sidebar{border-right:5px solid #ddd; padding-right:5px;}
+body div.sidebar h3 {text-decoration: underline; font-style: italic; }
+</style>
+</head>
+<body>
+<div id="wrapper">
+    <div id="header">
+		        <h1 id="blog-title"><a href="{{settings.base_url}}"  title="{{settings.name}}">{{settings.name}}</a></h1>
+		        <div id="blog-description">{{settings.tagline}}</div>
+	</div>
+
+    <div id="container">
+             <div id="primary" class="sidebar"><!-- Display all the plugins here. -->
+                   <ul>
+                      {% for block in blog.blocks %}
+                     {{ primary_sidebar_block(block, settings) }}
+                     {% endfor %}
+
+                  </ul>
+             </div><!-- end primary sidebar-->
+            <div id="secondary" class="sidebar"><!-- Display the template specific links, blocks  etc here -->
+                   <ul>
+                       <li id="subpagenav">
+                             <h3>Pages</h3>
+                                <ul><a href="{{settings.base_url}}about-me.html" title="About Me"><span>About Me</span></a></ul>
+                                 <ul><a href="{{settings.base_url}}archives.html" title="Complete Archives"><span>Archives</span></a></ul>
+                                 {% for item in settings['nav_links'] %} {% for key in item %}
+                                 <ul><a href="{{item[key]}}" title="{{key}}"><span>{{key}}</span></a></ul>
+                                 {% endfor %}{% endfor %}                        
+                        </li>
+
+                      <li id="rss-links">                              <h3>RSS</h3>
+                                 <ul>
+                                   <li><a id="rss-feed" title="Syndicate this site using RSS" href="{{settings['feedburner_url']}}">Subscribe via RSS</a> </li>
+                                 </ul>
+                                   </li>
+                              
+                 </ul>
+           </div><!-- end secondary sidebar -->
+             <div id="content" class="hfeed">
+                         {% block content %}
+                         {% endblock %}
+              <div class="navigation" id="nav-below">
+                        <span class="older"><a href="{{settings.base_url}}archives.html">Complete archives</a></span>
+                        <span class="meta-sep">|</span>
+                        <span class="older"><a href="{{settings.base_url}}">Home</a></span>
+              </div>  
+            </div>
+
+
+       </div>
+       <div id="footer">
+           <span id="generator-link">Powered by <a href="http://github.com/tamizhgeek/hislain" title="HiSlain">HiSlain</a></span>
+            <span class="meta-sep">|</span>
+            <span id="theme-link"><a href="http://www.plaintxt.org/themes/plaintxtblog/" title="plaintxtblog theme for WordPress" rel="follow designer">plaintxtblog</a> theme by <span class="vcard"><a class="url fn n" href="http://scottwallick.com/" title="scottwallick.com" rel="follow designer"><span class="given-name">Scott</span></a>
+             <span class="meta-sep">|</span>
+                  <span>Ported to HiSlain by :<a href="http://azhaguselvan.co.cc" >Azhaguselvan</a></span>
+
+</div>
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+	var links = document.getElementsByTagName('a');
+	var query = '?';
+	for(var i = 0; i < links.length; i++) {
+	if(links[i].href.indexOf('#disqus_thread') >= 0) {
+		query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+	}
+	}
+	document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/tamizhgeek/get_num_replies.js' + query + '"></' + 'script>');
+})();
+//]]>
+</script>
+</div>
+</body>
+
+</html>
