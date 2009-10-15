@@ -30,6 +30,7 @@
 <li class="page_item"><a href="{{settings.base_url}}archives.html" title="Complete Archives"><span>Archives</span></a></li>
 <li class="page_item"><a href="http://github.com/yuvipanda" title="My Code"><span>My Code</span></a></li>
 <li class="page_item"><a href="http://flickr.com/yuvi" title="My Photographs"><span>My Photos</span></a></li>
+{% for item in settings['nav_links'] %} {% for key in item %}<li class="page_item"><a href="{{item[key]}}" title="{{key}}"><span>{{key}}</span></a></li>{% endfor %}{% endfor %}
 </ul>
 <form action="http://www.google.com/cse" id="searchform">
   <div>
