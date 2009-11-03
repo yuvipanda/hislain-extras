@@ -41,8 +41,6 @@ body div.sidebar h3 {text-decoration: underline; font-style: italic; }
                    <ul>
                        <li id="subpagenav">
                              <h3>Pages</h3>
-                                <ul><a href="{{settings.base_url}}about-me.html" title="About Me"><span>About Me</span></a></ul>
-                                 <ul><a href="{{settings.base_url}}archives.html" title="Complete Archives"><span>Archives</span></a></ul>
                                  {% for item in settings['nav_links'] %} {% for key in item %}
                                  <ul><a href="{{item[key]}}" title="{{key}}"><span>{{key}}</span></a></ul>
                                  {% endfor %}{% endfor %}                        

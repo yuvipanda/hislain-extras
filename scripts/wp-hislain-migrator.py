@@ -1,13 +1,16 @@
-""" run the script from the dir which has the worpdress export file
+""" Run the script from the directory which has the worpdress export file
     
     give the base path of the HiSlain blog as a command-line argument.
-    remember the base path, not directly the out folder  """
+    Remember the *base path*, *not* directly the *out* folder  """
 import sys
 import os
-import elementtree.ElementTree as ET
-import codecs
-from datetime import datetime
+import xml.etree.ElementTree as ET
+from dateutil import parser
 def parse_xml():
+    """ Method that parses the wordpress export file
+        
+        It uses elementree module to extract the needed data from wp export file
+        """
     tree = ET.parse("wp.xml")
     list_of_blog_entries = []
     results = {}
@@ -17,34 +20,35 @@ def parse_xml():
         permalink = ()
         permalink = item.find("link").text.rpartition("/")
         results['link'] = permalink[2]
-        results['pubdate'] = str(datetime.strptime(item.find("pubDate").text,\
-                             "%a, %d %b %Y %H:%M:%S +0000"))
+        results['pubdate'] = parser.parse(item.find("pubDate").text)
+                             
         results['body'] = item.find( \
                       "{http://purl.org/rss/1.0/modules/content/}encoded").text
         results['post_type'] = item.find(\
                           "{http://wordpress.org/export/1.0/}post_type").text
         results['tags'] = [] 
         tags = item.findall("category")
-        for c in tags:
-            if c.get('domain')=='tag':
-                if c.get('nicename') != None:
-                    results['tags'].append(c.get('nicename'))
+        for entry in tags:
+            if entry.get('domain')=='tag':
+                if entry.get('nicename') != None:
+                    results['tags'].append(entry.get('nicename'))
         list_of_blog_entries.append(results)
         results = {}
     return list_of_blog_entries
 
 
-def write_files(blog_path,blog_entries):
+def write_files(blog_path, blog_entries):
+    """ Writes the posts, pages entries readable by HiSlain"""
     if not os.path.exists(blog_path):
         print "Invalid path"
     else:
         for item in blog_entries:
             if item['post_type'] == 'post':
                 file_name = item['link'].split('.')[0]
-                post_file = blog_path+"posts/"+file_name+".post"
+                post_file = os.path.join(blog_path, "posts", file_name+'.post')
             else:
                 file_name = item['link']
-                post_file = blog_path+"pages/"+file_name+".page"
+                post_file = os.path.join(blog_path, "pages", file_name+".page")
             fsock = open(post_file,'w')
             fsock.write(item['title']+"\n")
             if item['post_type'] == 'post':
@@ -54,13 +58,13 @@ def write_files(blog_path,blog_entries):
                     fsock.write(tag+",")
                 fsock.write("\n")
                 fsock.write("published: ")
-                fsock.write(item['pubdate'])
+                fsock.write(str(item['pubdate']))
             fsock.write("\n\n")
             body = item['body'].encode('utf-8')
             fsock.write(body)
 
-if __name__=='__main__':
-    blog_path = sys.argv[1]        
-    blog_entries = parse_xml()
-    write_files(blog_path, blog_entries)
+if __name__ == '__main__':
+    BlogPath = sys.argv[1]        
+    BlogEntries = parse_xml()
+    write_files(BlogPath, BlogEntries)
     
