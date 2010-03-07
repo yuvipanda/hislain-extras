@@ -4,7 +4,7 @@
     remember the base path, not directly the out folder  """
 import sys
 import os
-import elementtree.ElementTree as ET
+import xml.etree.ElementTree as ET
 import codecs
 from datetime import datetime
 def parse_xml():
@@ -45,7 +45,7 @@ def write_files(blog_path,blog_entries):
             else:
                 file_name = item['link']
                 post_file = blog_path+"pages/"+file_name+".page"
-            fsock = open(post_file,'w')
+            fsock = codecs.open(post_file,'w', encoding="utf-8")
             fsock.write(item['title']+"\n")
             if item['post_type'] == 'post':
                 fsock.write("permalink: "+item['link']+"\n")
@@ -56,8 +56,9 @@ def write_files(blog_path,blog_entries):
                 fsock.write("published: ")
                 fsock.write(item['pubdate'])
             fsock.write("\n\n")
-            body = item['body'].encode('utf-8')
+            body = item['body']
             fsock.write(body)
+            fsock.close()        
 
 if __name__=='__main__':
     blog_path = sys.argv[1]        
