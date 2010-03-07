@@ -5,7 +5,9 @@
 import sys
 import os
 import xml.etree.ElementTree as ET
-from dateutil import parser
+import codecs
+from datetime import datetime
+
 def parse_xml():
     """ Method that parses the wordpress export file
         
@@ -60,8 +62,9 @@ def write_files(blog_path, blog_entries):
                 fsock.write("published: ")
                 fsock.write(str(item['pubdate']))
             fsock.write("\n\n")
-            body = item['body'].encode('utf-8')
+            body = item['body']
             fsock.write(body)
+            fsock.close()        
 
 if __name__ == '__main__':
     BlogPath = sys.argv[1]        
